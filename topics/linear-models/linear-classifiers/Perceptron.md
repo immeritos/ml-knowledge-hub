@@ -9,23 +9,23 @@
 ### 1.1 Definition & Goal
 - **Perceptron** is an early **linear binary classifier** (Rosenblatt, 1958).  
 - It learns a separating hyperplane
-  \[
+  $$
   f(x)=\operatorname{sign}(w^\top x + b),\quad y\in\{-1,+1\}.
-  \]
+  $$
 - **Why**: When classes are (approximately) linearly separable, it’s a fast, simple baseline with online/streaming-friendly updates.
 
 ### 1.2 Working Principle (Error-Driven / Online)
-- **Decision**: \(\hat y=\operatorname{sign}(w^\top x+b)\).
+- **Decision**: $\hat y=\operatorname{sign}(w^\top x+b)$.
 - **Update only when misclassified** (error-driven):
-  \[
+ $$
   \text{if } y_i\,(w^\top x_i+b)\le 0:\quad
   w\leftarrow w+\eta\,y_i x_i,\;\; b\leftarrow b+\eta\,y_i,
-  \]
-  where \(\eta>0\) is the learning rate.
-- **View as SGD**: It’s equivalent to stochastic optimization of the **perceptron loss** \(\max(0,-y\,f(x))\) (a 0–1 loss surrogate).
+ $$
+  where $\eta>0$ is the learning rate.
+- **View as SGD**: It’s equivalent to stochastic optimization of the **perceptron loss** $\max(0,-y\,f(x))$ (a 0–1 loss surrogate).
 
 ### 1.3 Convergence & Geometry (intuition)
-- If data are **linearly separable**, the perceptron makes a **finite** number of mistakes and stops (mistake bound depends on margin \(\gamma\) and radius \(R\)).  
+- If data are **linearly separable**, the perceptron makes a **finite** number of mistakes and stops (mistake bound depends on margin $\gamma$ and radius $R$).  
 - Each update nudges the hyperplane **toward the correct side**, akin to making progress in the direction of a feasible separator.
 
 ### 1.4 Common Gotchas
@@ -254,7 +254,8 @@ print("train acc:", pp.score(X, y))
 ### 3.1 RNG: `random_state` (param) vs `self.random_state` (attribute)
 - Pass a seed or RNG via the constructor (e.g., `random_state=0`) and **store a dedicated RNG** inside the model for reproducibility and isolation from the global RNG:
 
-```python
+```
+python
 self.random_state = np.random.RandomState(seed)
 # or modern API:
 # self.rng = np.random.default_rng(seed)
@@ -284,7 +285,8 @@ y = np.vectorize(y_map.__getitem__)(y).astype(float)
 ### 3.3 `np.zeros` vs `np.zeros_like`
 - `np.zeros(shape, dtype=...)`: create a zero array with an **explicit shape** (default dtype `float64`).
 - `np.zeros_like(a, dtype=...)`: create a zero array that **matches `a`’s shape/dtype/layout**—ideal for accumulators aligned with existing arrays:
-```python
+```
+python
 w_sum = np.zeros_like(self.w_)
 ```
 
@@ -317,8 +319,8 @@ for epoch in range(max_iter):
 
 | Aspect            | Perceptron                                  | SVM (Soft-Margin)                                                                 |
 |-------------------|---------------------------------------------|------------------------------------------------------------------------------------|
-| Objective         | Reduce misclassifications (perceptron loss) | **Maximize margin** with regularization: \( \tfrac12\|w\|^2 + C \sum \max(0, 1 - y f) \) |
-| Margin control    | Not explicit                                | **Explicit** (hinge loss + \( \|w\|^2 \))                                         |
+| Objective         | Reduce misclassifications (perceptron loss) | **Maximize margin** with regularization: $\tfrac12\|w\|^2 + C \sum \max(0, 1 - y f)$ |
+| Margin control    | Not explicit                                | **Explicit** (hinge loss + $\|w\|^2$)                                         |
 | Robustness        | Sensitive to noise/outliers                 | Typically **more robust** (margin principle)                                      |
 | Solution support  | Uses all mistakes                           | Determined by **support vectors**                                                 |
 | Kernel trick      | Possible but uncommon                       | Natural via dual/KKT                                                               |
