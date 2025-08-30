@@ -9,18 +9,18 @@
 ### 1.1 Definition & Goal
 - **Perceptron** is an early **linear binary classifier** (Rosenblatt, 1958).  
 - It learns a separating hyperplane
-  $$
-  f(x)=\operatorname{sign}(w^\top x + b),\quad y\in\{-1,+1\}.
-  $$
+```math
+  f(x)=\mathrm{sign}(w^\top x + b),\quad y\in\{-1,+1\}.
+```
 - **Why**: When classes are (approximately) linearly separable, it’s a fast, simple baseline with online/streaming-friendly updates.
 
 ### 1.2 Working Principle (Error-Driven / Online)
-- **Decision**: $\hat y=\operatorname{sign}(w^\top x+b)$.
+- **Decision**: $\hat y=\mathrm{sign}(w^\top x+b)$.
 - **Update only when misclassified** (error-driven):
- $$
+```math
   \text{if } y_i\,(w^\top x_i+b)\le 0:\quad
   w\leftarrow w+\eta\,y_i x_i,\;\; b\leftarrow b+\eta\,y_i,
- $$
+```
   where $\eta>0$ is the learning rate.
 - **View as SGD**: It’s equivalent to stochastic optimization of the **perceptron loss** $\max(0,-y\,f(x))$ (a 0–1 loss surrogate).
 
