@@ -1,12 +1,16 @@
 import numpy as np
+from typing import Iterator, Tuple, Optional
 
-def batch_iterator(X, y=None, batch_size=64):
+def batch_iterator(
+    X: np.ndarray, 
+    y: Optional[np.ndarray] = None, 
+    batch_size: int =64
+) -> Iterator[Tuple[np.ndarray, Optional[np.ndarray]]]:
     n_samples = X.shape[0]
-    batches = []
-    for i in np.arange(0, n_samples, batch_size):
-        begin, end = i, min(i+batch_size, n_samples)
+    
+    for start in range(0, n_samples, batch_size):
+        end = min(start+batch_size, n_samples)
         if y is not None:
-            batches.append([X[begin:end], y[begin:end]])
+            yield X[start:end], y[start:end]
         else:
-            batches.append(X[begin:end])
-    return batches
+            yield X[start:end], None
